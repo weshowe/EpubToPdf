@@ -2,6 +2,8 @@ import sys
 from manage import FileManager
 from getpy import GetEngine
 from pdfpy import PdfEngine
+from pathlib import Path
+import os
 
 def process():
 
@@ -9,7 +11,7 @@ def process():
 
 		print('--- Epub to PDF conversion started')
 
-		epub_file = sys.argv[1]
+		epub_file = str(Path(os.path.abspath(sys.argv[1])).resolve()) # Handle relative paths
 		file = FileManager(epub_file)
 		file.epub_to_zip()
 		file.get_directory()
@@ -25,8 +27,7 @@ def process():
 		pdf.convert()
 		pdf.combine()
 		pdf.del_pdf()
-		file.zip_to_epub()
-		file.del_directory()
+		file.del_files()
 
 		print('--- Epub to PDF conversion successful')
 
